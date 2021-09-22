@@ -1,18 +1,14 @@
-Python 3 needed
+# Chess tournament simulator
+[OpenClassRoom mission for project_4](https://openclassrooms.com/fr/paths/322/projects/834/assignment)
 
-# Install
-
-- clone this repository
-
-# Launch
-
-```shell
-python -m players
-```
-
-# Ideas to practice
-
-- Create an "edit players" function
-- Load the players from an external file instead of hard-coded them
-- Validate data when creating a new player
-- Displaying error messages when viewing or deleting a user that does not exists on the store
+## Install:
+  Install virtual env [here](https://virtualenvwrapper.readthedocs.io/en/latest/)
+  ```
+  - mkvirtualenv project_4
+  - workon project_4
+  - pip install -r requirements.txt
+  - python -m players
+  ```
+  
+## Development utilities:
+  Run autoformat.sh in order to format code with blake, flake8 and isort.
