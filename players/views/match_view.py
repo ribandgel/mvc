@@ -13,7 +13,7 @@ class MatchView:
             elif m.score == 1:
                 status = f"Winner is {m.player2.first_name}"
             elif m.score == 2:
-                status = f"Match null"
+                status = "Match null"
             print(f"\t{m.id}\t{m.player1.first_name}\t{m.player2.first_name}\t{status}")
         routes = ["play_match", "homepage", "quit"]
         all_cleared = True

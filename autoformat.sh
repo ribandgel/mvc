@@ -5,6 +5,6 @@ autoflake --remove-all-unused-imports --remove-unused-variables --remove-duplica
 
 isort players
 
-flake8 --ignore E203,E501,W503 players
+flake8  players
  
-black --line-length=100 players
+black --line-length=119 players
