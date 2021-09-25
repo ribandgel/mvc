@@ -1,9 +1,12 @@
+import subprocess as sp
+
 from players.controllers.error_controller import ErrorController
 from players.controllers.home_controller import HomePageController
-from players.models.player import Player
+from players.controllers.match_controller import MatchController
 from players.controllers.player_controller import PlayerController
-import subprocess as sp
+from players.controllers.round_controller import RoundController
 from players.controllers.store_controller import StoreController
+from players.controllers.tournament_controller import TournamentController
 from players.models.store import Store
 
 
@@ -15,6 +18,22 @@ class Application:
         "new_player": PlayerController.create,
         "view_player": PlayerController.view,
         "delete_player": PlayerController.delete,
+        "list_tournament": TournamentController.list,
+        "list_players_by_ranking": PlayerController.list_players_by_ranking,
+        "list_players_by_name": PlayerController.list_players_by_name,
+        "new_tournament": TournamentController.create,
+        "view_tournament": TournamentController.view,
+        "select_players": TournamentController.select_players,
+        "select_all_players": TournamentController.select_all_players,
+        "deselect_players": TournamentController.deselect_players,
+        "play_tournament": TournamentController.play,
+        "finish_tournament": TournamentController.finish,
+        "list_round": RoundController.list,
+        "new_round": RoundController.create,
+        "view_round": RoundController.view,
+        "finish_round": RoundController.finish,
+        "list_match": MatchController.list,
+        "play_match": MatchController.play,
         "save_store": StoreController.save_store,
         "import_saved_store": StoreController.import_saved_store,
         "error": ErrorController.error,
@@ -30,7 +49,6 @@ class Application:
         while not self.exit:
             # Clear the shell output
             sp.call("clear", shell=True)
-            sp.call('clear', shell=True)
 
             # Get the controller method that should handle our current route
             controller_method = self.routes[self.route]
