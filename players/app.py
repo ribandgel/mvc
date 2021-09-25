@@ -1,3 +1,4 @@
+from players.controllers.error_controller import ErrorController
 from players.controllers.home_controller import HomePageController
 from players.models.player import Player
 from players.controllers.player_controller import PlayerController
@@ -16,6 +17,7 @@ class Application:
         "delete_player": PlayerController.delete,
         "save_store": StoreController.save_store,
         "import_saved_store": StoreController.import_saved_store,
+        "error": ErrorController.error,
     }
 
     def __init__(self) -> None:
