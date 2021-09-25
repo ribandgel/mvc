@@ -2,6 +2,8 @@ from players.controllers.home_controller import HomePageController
 from players.models.player import Player
 from players.controllers.player_controller import PlayerController
 import subprocess as sp
+from players.controllers.store_controller import StoreController
+from players.models.store import Store
 
 
 class Application:
@@ -12,22 +14,20 @@ class Application:
         "new_player": PlayerController.create,
         "view_player": PlayerController.view,
         "delete_player": PlayerController.delete,
+        "save_store": StoreController.save_store,
+        "import_saved_store": StoreController.import_saved_store,
     }
 
     def __init__(self) -> None:
         self.route = "homepage"
         self.exit = False
         self.route_params = None
-        self.store = {
-            "players": [
-                Player(1, "Pablo", 36, "pablo@test.com"),
-                Player(2, "Michel", 40, "michel@test.com"),
-            ]
-        }
+        self.store = Store()
 
     def run(self):
         while not self.exit:
             # Clear the shell output
+            sp.call("clear", shell=True)
             sp.call('clear', shell=True)
 
             # Get the controller method that should handle our current route
@@ -38,9 +38,7 @@ class Application:
             # Every controller should return two things:
             # - the next route to display
             # - the parameters needed for the next route
-            next_route, next_params = controller_method(
-                self.store, self.route_params
-            )
+            next_route, next_params = controller_method(self.store, self.route_params)
 
             # set the next route and input
             self.route = next_route
@@ -48,4 +46,5 @@ class Application:
 
             # if the controller returned "quit" then we end the loop
             if next_route == "quit":
+                self.store.save_store()
                 self.exit = True
