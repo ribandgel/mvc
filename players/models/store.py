@@ -54,5 +54,12 @@ class Store:
     def nb_matchs(self):
         nb_matchs = 0
         for tournament in self.tournaments.values():
-            nb_matchs += tournament.nb_matchs()
+            nb_matchs = nb_matchs + tournament.nb_matchs()
         return nb_matchs
+
+    def nb_rounds(self):
+        nb_rounds = 0
+        for tournament in self.tournaments.values():
+           nb_rounds = nb_rounds + len(tournament.rounds)
+        return nb_rounds
+

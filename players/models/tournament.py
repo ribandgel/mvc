@@ -23,7 +23,7 @@ class Tournament:
         self.place = place
         self.date = date
         self.nb_turns = nb_turns
-        self.rounds = rounds
+        self.rounds = rounds or []
         self.players = players
         self.time_type = time_type
         self.description = description
@@ -40,7 +40,7 @@ class Tournament:
             players = [p.to_serialize() for p in self.players]
         d = self.date
         if isinstance(d, date):
-            d = date.isoformat()
+            d = self.date.strftime('%Y-%m-%d')
         return {
             "name": self.name,
             "place": self.place,
@@ -88,17 +88,17 @@ class Tournament:
         if player.id in self.scores:
             self.scores[player.id] = self.scores[player.id] + 1
         else:
-            self.scores[player.id] = 0
+            self.scores[player.id] = 1
 
     def players_match_null(self, player1, player2):
         if player1.id in self.scores:
             self.scores[player1.id] = self.scores[player1.id] + 0.5
         else:
-            self.scores[player1.id] = 0
+            self.scores[player1.id] = 0.5
         if player2.id in self.scores:
             self.scores[player2.id] = self.scores[player2.id] + 0.5
         else:
-            self.scores[player2.id] = 0
+            self.scores[player2.id] = 0.5
 
     def has_players_game_with(self, player1, player2):
         for round in self.rounds:
@@ -116,5 +116,5 @@ class Tournament:
     def nb_matchs(self):
         nb_matchs = 0
         for length in [len(r.matchs) for r in self.rounds]:
-            nb_matchs += length
+            nb_matchs = nb_matchs + length
         return nb_matchs

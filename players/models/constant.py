@@ -19,6 +19,7 @@ trad_routes = {
     "finish_round": "Finish Round",
     "play_tournament": "Play",
     "save_store": "Save",
+    "dislay_scores": "Display Scores",
     "import_saved_store": "Import save",
     "play_match": "Play match",
     "list_match": "View matchs",

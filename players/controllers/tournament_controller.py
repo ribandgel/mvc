@@ -64,6 +64,7 @@ class TournamentController:
                 "select_players",
                 "select_all_players",
                 "deselect_players",
+                "dislay_scores"
             ]:
                 extra_info = tournament
             return route, extra_info
@@ -73,6 +74,7 @@ class TournamentController:
     @classmethod
     def select_players(cls, store, tournament):
         players_available = store.players.values()
+        tournament.status = "WAITING ROUND"
         if tournament.players is not None:
             players_available = set(store.players.values()) - set(tournament.players)
             players_available = list(players_available)
@@ -101,6 +103,7 @@ class TournamentController:
 
     @classmethod
     def select_all_players(cls, store, tournament):
+        tournament.status = "WAITING ROUND"
         tournament.players = store.players.values()
         return "view_tournament", tournament.id
 
@@ -129,11 +132,11 @@ class TournamentController:
             return "list_round", tournament.rounds
         tournament.status = "PLAYING"
         players = list(tournament.players)
-        players.sort(key=lambda player: player.ranking)
+        players.sort(key=lambda player: -int(player.ranking))
         middle_index = len(players) // 2
         first_part = players[:middle_index]
         second_part = players[middle_index:]
-        first_round = Round(id=0, tournament=tournament, players=tournament.players, matchs=[])
+        first_round = Round(id=store.nb_rounds()+1, tournament=tournament, players=tournament.players, matchs=[])
         tournament.rounds.append(first_round)
         tournament.nb_turns = 1
         for player_index in range(0, len(first_part)):
@@ -152,5 +155,5 @@ class TournamentController:
     def finish(cls, store, tournament):
         tournament.status == "ENDED"
         for player in tournament.players:
-            player.ranking += tournament.scores[player.id]
-        return "homepage", None
+            player.ranking = player.ranking = tournament.get_score(player)
+        return "list_tournament", None

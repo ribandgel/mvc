@@ -39,6 +39,7 @@ class TournamentView:
         mapping = print_choices(
             [
                 "play_tournament",
+                "dislay_scores",
                 "list_round",
                 "list_match",
                 "list_player",

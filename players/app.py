@@ -34,6 +34,7 @@ class Application:
         "finish_round": RoundController.finish,
         "list_match": MatchController.list,
         "play_match": MatchController.play,
+        "dislay_scores": PlayerController.dislay_scores,
         "save_store": StoreController.save_store,
         "import_saved_store": StoreController.import_saved_store,
         "error": ErrorController.error,

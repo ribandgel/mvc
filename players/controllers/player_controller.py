@@ -119,3 +119,17 @@ class PlayerController:
             return "quit", None
         elif choice.lower() == "h":
             return "homepage", None
+
+    @classmethod
+    def dislay_scores(cls, store, tournament):
+        players = list(tournament.players)
+        players.sort(key=lambda player: -tournament.get_score(player))
+        choice, mapping = PlayerView.display_scores(players, tournament)
+        route = mapping.get(choice.lower())
+        if route:
+            if route == "view_tournament":
+                return route, tournament
+            if route == "list_round":
+                return route, tournament.rounds
+
+        return route, None

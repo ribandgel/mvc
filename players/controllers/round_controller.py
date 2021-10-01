@@ -21,12 +21,11 @@ class RoundController:
 
     @classmethod
     def create(cls, store, tournament):
+        if tournament.nb_turns == 0 or tournament.nb_turns is None:
+            return "play_tournament", tournament
         # Create next round
 
         players = list(tournament.players)
-        import pdb
-
-        pdb.set_trace()
         players.sort(key=lambda player: (-player.ranking, -tournament.get_score(player)))
         next_round = Round(
             id=len(tournament.rounds), tournament=tournament, players=tournament.players, matchs=[]

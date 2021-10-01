@@ -1,5 +1,7 @@
 from datetime import date
 
+from players.views.utils import print_choices
+
 
 class PlayerView:
     @classmethod
@@ -50,3 +52,15 @@ class PlayerView:
             "sexe": input("Enter sexe: "),
             "ranking": input("Enter ranking: "),
         }
+
+    @classmethod
+    def display_scores(cls, players, tournament):
+        print("\tID\tFirst name\tLast name\tScores")
+        for player in players:
+            print(f"\t{player.id}\t{player.first_name}\t{player.last_name}\t{tournament.get_score(player)}")
+
+        mapping = print_choices(["view_tournament", "list_round", "homepage", "quit"])
+        choice = input("Choice: ")
+
+        return choice, mapping
+
