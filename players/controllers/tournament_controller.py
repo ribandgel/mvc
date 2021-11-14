@@ -55,7 +55,7 @@ class TournamentController:
             elif route == "list_player" or route == "list_players_by_ranking":
                 if tournament.players is not None:
                     displayed_players = list(tournament.players)
-                    displayed_players.sort(lambda player: player.id)
+                    displayed_players.sort(key=lambda player: player.id)
                 else:
                     displayed_players = []
                 extra_info = displayed_players
@@ -64,7 +64,7 @@ class TournamentController:
                 "select_players",
                 "select_all_players",
                 "deselect_players",
-                "dislay_scores"
+                "dislay_scores",
             ]:
                 extra_info = tournament
             return route, extra_info
@@ -73,7 +73,7 @@ class TournamentController:
 
     @classmethod
     def select_players(cls, store, tournament):
-        players_available = store.players.values()
+        players_available = list(store.players.values())
         tournament.status = "WAITING ROUND"
         if tournament.players is not None:
             players_available = set(store.players.values()) - set(tournament.players)
@@ -84,7 +84,7 @@ class TournamentController:
         choice, mapping, player_id = TournamentView.select_players(players_available, tournament)
         route = mapping.get(choice.lower())
         if route:
-            if route == "select_players" and player_id:
+            if route == "select_players" and player_id is not None:
                 try:
                     player = store.players[player_id]
                 except KeyError:
@@ -113,9 +113,14 @@ class TournamentController:
             return "error", "There is no player on this tournament"
         displayed_players = list(tournament.players)
         displayed_players.sort(key=lambda player: player.id)
-        choice, player_id = TournamentView.deselect_players(tournament.players, tournament)
-        player = store.players[player_id]
-        tournament.players.remove(player)
+        choice, player_id = TournamentView.deselect_players(displayed_players, tournament)
+        try:
+            player = store.players[player_id]
+            tournament.players.remove(player)
+        except KeyError:
+            return "error", "This player doesn't exist"
+        except ValueError:
+            return "error", "This player is not in this tournament"
 
         if choice.lower() == "q":
             return "quit", None
@@ -126,9 +131,9 @@ class TournamentController:
     def play(cls, store, tournament):
         if tournament.status == "ENDED":
             return "list_tournament", None
-        elif tournament.players is None or len(tournament.players) == 0:
+        elif tournament.players is None or len(tournament.players) < 2:
             return "select_players", tournament
-        elif tournament.nb_turns != 0 and tournament.nb_turns is not None:
+        elif tournament.rounds is not None and len(tournament.rounds) != 0:
             return "list_round", tournament.rounds
         tournament.status = "PLAYING"
         players = list(tournament.players)
@@ -136,8 +141,8 @@ class TournamentController:
         middle_index = len(players) // 2
         first_part = players[:middle_index]
         second_part = players[middle_index:]
-        first_round = Round(id=store.nb_rounds()+1, tournament=tournament, players=tournament.players, matchs=[])
-        tournament.rounds.append(first_round)
+        first_round = Round(id=store.nb_rounds() + 1, tournament=tournament, players=tournament.players, matchs=[])
+        tournament.rounds = [first_round]
         tournament.nb_turns = 1
         for player_index in range(0, len(first_part)):
             match = Match(
@@ -153,7 +158,7 @@ class TournamentController:
 
     @classmethod
     def finish(cls, store, tournament):
-        tournament.status == "ENDED"
+        tournament.status = "ENDED"
         for player in tournament.players:
             player.ranking = player.ranking = tournament.get_score(player)
         return "list_tournament", None

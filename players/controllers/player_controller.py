@@ -120,16 +120,31 @@ class PlayerController:
         elif choice.lower() == "h":
             return "homepage", None
 
+        return "error", "Invalide choice"
+
     @classmethod
     def dislay_scores(cls, store, tournament):
         players = list(tournament.players)
         players.sort(key=lambda player: -tournament.get_score(player))
-        choice, mapping = PlayerView.display_scores(players, tournament)
+        choice, mapping, player_id, score = PlayerView.display_scores(players, tournament)
         route = mapping.get(choice.lower())
         if route:
             if route == "view_tournament":
                 return route, tournament
             if route == "list_round":
                 return route, tournament.rounds
+            if route == "display_scores" and player_id and score:
+                try:
+                    score = float(score)
+                    player_id = int(player_id)
+                    players = [p for p in tournament.players if p.id == player_id]
+                    if len(players) == 1:
+                        tournament.set_score(players[0], score)
+                    return "display_scores", tournament
+                except ValueError:
+                    return "error", "Bad value"
+                except KeyError:
+                    return "error", "Player doesn't exist or player is not in this tournament"
+            return route, None
 
-        return route, None
+        return "error", "Invalide choice"

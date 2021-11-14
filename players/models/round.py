@@ -4,9 +4,7 @@ from players.models.match import Match
 
 
 class Round:
-    def __init__(
-        self, id, tournament, players, date_start=None, date_end=None, matchs=None
-    ) -> None:
+    def __init__(self, id, tournament, players, date_start=None, date_end=None, matchs=None) -> None:
         self.tournament = tournament
         self.players = players
         self.matchs = matchs
@@ -15,7 +13,7 @@ class Round:
         self.id = id
 
     def to_serialize(self):
-        date_end = self.date_end.strftime('%Y-%m-%d') if isinstance(self.date_end, date) else ""
+        date_end = self.date_end.strftime("%Y-%m-%d") if isinstance(self.date_end, date) else ""
         return {
             "players": [player.id for player in self.players],
             "matchs": [match.to_serialize() for match in self.matchs],

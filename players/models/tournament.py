@@ -40,7 +40,7 @@ class Tournament:
             players = [p.to_serialize() for p in self.players]
         d = self.date
         if isinstance(d, date):
-            d = self.date.strftime('%Y-%m-%d')
+            d = self.date.strftime("%Y-%m-%d")
         return {
             "name": self.name,
             "place": self.place,
@@ -70,18 +70,17 @@ class Tournament:
             scores=serialized_tournament["scores"],
             status=serialized_tournament["status"],
         )
-        rounds = [
-            Round.to_deserialize(r, tournament, players) for r in serialized_tournament["rounds"]
-        ]
+        rounds = [Round.to_deserialize(r, tournament, players) for r in serialized_tournament["rounds"]]
         tournament.rounds = rounds
         return tournament
 
     def set_player_score(self, player, score):
-        self.scores[player.id] = score
+        if isinstance(score, int) or isinstance(score, float):
+            self.scores[player.id] = score
 
     def get_score(self, player):
         if player.id in self.scores:
-            return self.scores[player.id]
+            return float(self.scores[player.id])
         return 0
 
     def player_win_match(self, player):

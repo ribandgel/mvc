@@ -23,9 +23,7 @@ class Store:
         for tournament in self.tournaments.values():
             res_query = self.tournaments_db.search(TournamentQuery.id == tournament.id)
             if res_query != []:
-                self.tournaments_db.update(
-                    tournament.to_serialize(), TournamentQuery.id == tournament.id
-                )
+                self.tournaments_db.update(tournament.to_serialize(), TournamentQuery.id == tournament.id)
             else:
                 self.tournaments_db.insert(tournament.to_serialize())
 
@@ -60,6 +58,5 @@ class Store:
     def nb_rounds(self):
         nb_rounds = 0
         for tournament in self.tournaments.values():
-           nb_rounds = nb_rounds + len(tournament.rounds)
+            nb_rounds = nb_rounds + len(tournament.rounds)
         return nb_rounds
-

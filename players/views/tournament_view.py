@@ -9,9 +9,7 @@ class TournamentView:
 
         print("\tID\tName\tPlace\tDate\tStatus")
         for tournament in tournaments:
-            print(
-                f"\t{tournament.id}\t{tournament.name}\t{tournament.place}\t{tournament.date}\t{tournament.status}"
-            )
+            print(f"\t{tournament.id}\t{tournament.name}\t{tournament.place}\t{tournament.date}\t{tournament.status}")
 
         mapping = print_choices(["view_tournament", "new_tournament", "homepage", "quit"])
         choice = input("Choice: ")
@@ -57,9 +55,9 @@ class TournamentView:
     @classmethod
     def select_players(cls, players_available, tournament):
         print("List of available players:")
-        print("\tID\tFirst name\tLast name")
+        print("\tID\tFirst name\tLast name\tRanking")
         for p in players_available:
-            print(f"\t{p.id}\t{p.first_name}\t{p.last_name}")
+            print(f"\t{p.id}\t{p.first_name}\t{p.last_name}\t{p.ranking}")
 
         mapping = print_choices(
             ["select_players", "select_all_players", "view_tournament", "quit", "homepage"],

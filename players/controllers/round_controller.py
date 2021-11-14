@@ -26,22 +26,16 @@ class RoundController:
         # Create next round
 
         players = list(tournament.players)
-        players.sort(key=lambda player: (-player.ranking, -tournament.get_score(player)))
-        next_round = Round(
-            id=len(tournament.rounds), tournament=tournament, players=tournament.players, matchs=[]
-        )
+        players.sort(key=lambda player: (-int(player.ranking), -tournament.get_score(player)))
+        next_round = Round(id=store.nb_rounds() + 1, tournament=tournament, players=tournament.players, matchs=[])
 
-        tournament.rounds.append(next_round)
-        tournament.nb_turns += 1
         for player_index in range(0, len(players) // 2):
             if not len(players) >= 2:
                 break
             player = players[0]
             if player in players:
                 players.pop(players.index(player))
-                associate_player = tournament.get_associate_player_with_next_playable_player(
-                    player, players
-                )
+                associate_player = tournament.get_associate_player_with_next_playable_player(player, players)
                 if associate_player is not None:
                     players.pop(players.index(associate_player))
                     match = Match(
@@ -53,6 +47,10 @@ class RoundController:
                         score=None,
                     )
                     next_round.matchs.append(match)
+        if len(next_round.matchs) == 0:
+            return "error", "All players have played with others"
+        tournament.rounds.append(next_round)
+        tournament.nb_turns += 1
         return "list_round", tournament.rounds
 
     @classmethod

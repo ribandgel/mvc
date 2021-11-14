@@ -1,5 +1,3 @@
-from datetime import date
-
 from players.views.utils import print_choices
 
 
@@ -41,14 +39,10 @@ class PlayerView:
 
     @classmethod
     def create_player(cls):
-        print("Date of birth:")
-        year = int(input("Enter the year: "))
-        month = int(input("Enter the month: "))
-        day = int(input("Enter the day: "))
         return {
             "first_name": input("Enter first name: "),
             "last_name": input("Enter last name: "),
-            "date_of_birth": date(year, month, day),
+            "date_of_birth": input("Date of birth: "),
             "sexe": input("Enter sexe: "),
             "ranking": input("Enter ranking: "),
         }
@@ -59,8 +53,13 @@ class PlayerView:
         for player in players:
             print(f"\t{player.id}\t{player.first_name}\t{player.last_name}\t{tournament.get_score(player)}")
 
-        mapping = print_choices(["view_tournament", "list_round", "homepage", "quit"])
+        mapping = print_choices(
+            ["view_tournament", "list_round", "display_scores", "homepage", "quit"], {"display_scores": "Edit score"}
+        )
         choice = input("Choice: ")
+        player_id = None
+        if choice == "3":
+            player_id = input("Enter Player Id:")
+            score = input("Enter Score:")
 
-        return choice, mapping
-
+        return choice, mapping, player_id, score

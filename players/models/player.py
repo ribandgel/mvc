@@ -11,11 +11,7 @@ class Player:
         self.id = id
 
     def to_serialize(self):
-        date_of_birth = (
-            self.date_of_birth.isoformat()
-            if isinstance(self.date_of_birth, date)
-            else self.date_of_birth
-        )
+        date_of_birth = self.date_of_birth.isoformat() if isinstance(self.date_of_birth, date) else self.date_of_birth
         return {
             "first_name": self.first_name,
             "last_name": self.last_name,
