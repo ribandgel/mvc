@@ -11,4 +11,7 @@
   ```
   
 ## Development utilities:
-  Run autoformat.sh in order to format code with blake, flake8 and isort.
+  Run autoformat.sh in order to format code with blake, flake8 and isort
+  
+  To generate a new flake8 report, please use this command:
+  ```flake8 --format=html --htmldir=flake-report```
