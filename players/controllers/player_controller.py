@@ -124,13 +124,16 @@ class PlayerController:
 
     @classmethod
     def dislay_scores(cls, store, tournament):
-        players = list(tournament.players)
+        if tournament.players:
+            players = list(tournament.players)
+        else:
+            return "error", "There is no player in tournament yet"
         players.sort(key=lambda player: -tournament.get_score(player))
         choice, mapping, player_id, score = PlayerView.display_scores(players, tournament)
         route = mapping.get(choice.lower())
         if route:
             if route == "view_tournament":
-                return route, tournament
+                return route, tournament.id
             if route == "list_round":
                 return route, tournament.rounds
             if route == "display_scores" and player_id and score:

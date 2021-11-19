@@ -14,7 +14,7 @@ class Tournament:
         time_type,
         description,
         scores=None,
-        nb_turns=None,
+        nb_turns=0,
         rounds=None,
         players=None,
         status=None,
@@ -58,16 +58,19 @@ class Tournament:
     @classmethod
     def to_deserialize(cls, serialized_tournament):
         players = [Player.to_deserialize(player) for player in serialized_tournament["players"]]
+        scores = {}
+        for player_id in serialized_tournament["scores"]:
+            scores[int(player_id)] = float(serialized_tournament["scores"][player_id])
         tournament = Tournament(
             id=serialized_tournament["id"],
             name=serialized_tournament["name"],
             place=serialized_tournament["place"],
             date=serialized_tournament["date"],
-            nb_turns=serialized_tournament["nb_turns"],
+            nb_turns=int(serialized_tournament["nb_turns"]),
             players=players,
             time_type=serialized_tournament["time_type"],
             description=serialized_tournament["description"],
-            scores=serialized_tournament["scores"],
+            scores=scores,
             status=serialized_tournament["status"],
         )
         rounds = [Round.to_deserialize(r, tournament, players) for r in serialized_tournament["rounds"]]

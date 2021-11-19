@@ -28,6 +28,8 @@ class RoundController:
         players = list(tournament.players)
         players.sort(key=lambda player: (-int(player.ranking), -tournament.get_score(player)))
         next_round = Round(id=store.nb_rounds() + 1, tournament=tournament, players=tournament.players, matchs=[])
+        tournament.rounds.append(next_round)
+        tournament.nb_turns += 1
 
         for player_index in range(0, len(players) // 2):
             if not len(players) >= 2:
@@ -48,9 +50,9 @@ class RoundController:
                     )
                     next_round.matchs.append(match)
         if len(next_round.matchs) == 0:
+            tournament.nb_turns -= 1
+            del tournament.rounds[tournament.nb_turns]
             return "error", "All players have played with others"
-        tournament.rounds.append(next_round)
-        tournament.nb_turns += 1
         return "list_round", tournament.rounds
 
     @classmethod

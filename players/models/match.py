@@ -23,5 +23,5 @@ class Match:
             tournament=tournament,
             player1=player1,
             player2=player2,
-            score=serialized_match["score"],
+            score=int(serialized_match["score"]) if serialized_match["score"] != None else None,
         )

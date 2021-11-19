@@ -159,6 +159,6 @@ class TournamentController:
     @classmethod
     def finish(cls, store, tournament):
         tournament.status = "ENDED"
-        for player in tournament.players:
-            player.ranking = player.ranking = tournament.get_score(player)
+        for player in store.players.values():
+            player.ranking = int(player.ranking) + tournament.get_score(player)
         return "list_tournament", None

@@ -58,6 +58,7 @@ class PlayerView:
         )
         choice = input("Choice: ")
         player_id = None
+        score = None
         if choice == "3":
             player_id = input("Enter Player Id:")
             score = input("Enter Score:")
